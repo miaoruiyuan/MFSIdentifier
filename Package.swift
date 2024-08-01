@@ -16,26 +16,15 @@ let package = Package(
         // Targets can depend on other targets in this package and products from dependencies.
         .target(name: "MFSIdentifier",
                 dependencies: ["MFSIdentifierObjC"],
-                path: "Sources/MFSIdentifier", 
-                cSettings: [
-                    .headerSearchPath("../MFSIdentifierObjC/MFSCache"),
-                    .headerSearchPath("../MFSIdentifierObjC/MFSJSONEntity"),
-                    .define("SWIFT_PACKAGE", to: "1"),
-                    .unsafeFlags(["-fobjc-arc"], .when(configuration: .release))
-                
-                ]),
+                path: "Sources/MFSIdentifier"),
         .target(
-            name: "MFSIdentifierObjC", dependencies: [],
+            name: "MFSIdentifierObjC",
+            dependencies: [],
             path: "Sources/MFSIdentifierObjC",
-            publicHeadersPath: ".",
-            cSettings: [
-                .headerSearchPath("Category"),
-                .headerSearchPath("MFSCache"),
-                .headerSearchPath("MFSCache/MFSCacheManager"),
-                .headerSearchPath("MFSCache/AuxCategory"),
-                .headerSearchPath("MFSJSONEntity")
-            ]),
-        
+            exclude: ["Info.plist"],
+            publicHeadersPath: "include",
+            cSettings: [.headerSearchPath(".")],
+            cxxSettings: [.headerSearchPath(".")]),
         .testTarget(
             name: "MFSIdentifierTests",
             dependencies: ["MFSIdentifier"]),
