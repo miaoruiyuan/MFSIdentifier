@@ -1,0 +1,5 @@
+module Objc {
+    umbrella header "MFSIdentifier.h"
+    export *
+    module * { export * }
+}

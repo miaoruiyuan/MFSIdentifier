@@ -4,30 +4,34 @@
 import PackageDescription
 
 let package = Package(
-    name: "MFSIdentifier",
+    name: "MFSIdentifierSPM",
+    platforms: [.iOS(.v17),
+                .macOS(.v10_14)],
     products: [
         // Products define the executables and libraries a package produces, making them visible to other packages.
-        .library(name: "MFSIdentifier",
-                 targets: ["MFSIdentifier"]),
-        .library(name: "MFSIdentifierObjC",
-                 targets: ["MFSIdentifierObjC"])
+        .library(
+            name: "MFSIdentifierSPM",
+            targets: ["MFSIdentifierSPM"])
     ],
     targets: [
-        // Targets are the basic building blocks of a package, defining a module or a test suite.
-        // Targets can depend on other targets in this package and products from dependencies.
-        .target(name: "MFSIdentifier",
-                dependencies: ["MFSIdentifierObjC"],
-                path: "Sources/MFSIdentifier"),
-        .target(
-            name: "MFSIdentifierObjC",
-            dependencies: [],
-            path: "Sources/MFSIdentifierObjC",
-            exclude: ["Info.plist"],
-            publicHeadersPath: "include",
-            cSettings: [.headerSearchPath(".")],
-            cxxSettings: [.headerSearchPath(".")]),
+        .target(name: "Objc", 
+                dependencies: [],
+                path: "Sources/Objc",
+                exclude: ["Info.plist"],
+                publicHeadersPath: "include",
+                cSettings: [.headerSearchPath("include"),
+                            .headerSearchPath("Category"),
+                           .headerSearchPath("MFSCache"),
+                           .headerSearchPath("MFSCache/MFSCacheManager"),
+                            .headerSearchPath("MFSCache/AuxCategory"),
+                           .headerSearchPath("MFSCache/MFSJSONEntity"),
+                ]),
+            .target(
+            name: "MFSIdentifierSPM",
+            dependencies: ["Objc"],
+            path: "Sources/MFSIdentifierSPM"),
         .testTarget(
-            name: "MFSIdentifierTests",
-            dependencies: ["MFSIdentifier"]),
+            name: "MFSIdentifierSPMTests",
+            dependencies: ["MFSIdentifierSPM"]),
     ]
 )
